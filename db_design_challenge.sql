@@ -217,3 +217,13 @@ FROM blog_tags
 LEFT JOIN blog_intersect_tags
 ON blog_tags.tag_id = blog_intersect_tags.tag_id
 GROUP BY blog_tags.tag_content;
+
+--Retrieve a list of tags for a particular blog post
+--    seems to require double JOIN which I had to research and play with to
+--    get right.
+
+SELECT blog_post.title, blog_post.summary, blog_tags.tag_content
+FROM blog_tags
+JOIN blog_intersect_tags ON blog_tags.tag_id = blog_intersect_tags.tag_id
+JOIN blog_post ON blog_intersect_tags.blog_id = blog_post.blog_id
+WHERE blog_post.blog_id = 3;
