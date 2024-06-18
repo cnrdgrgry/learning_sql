@@ -201,3 +201,19 @@ INSERT INTO blog_intersect_tags (blog_id, tag_id) VALUES
 (9, 13), -- Character Creation | Characters
 (10, 14), -- Screenwriting Tips | Screenwriting
 (10, 15); -- Screenwriting Tips | Adaptation
+
+-- Retrieve a list of all tags
+TABLE blog_tags;
+-- or the proper way!
+SELECT *
+FROM blog_tags;
+
+-- Retrieve a list of all tags and how many times they've been used.
+
+SELECT blog_tags.tag_content, COUNT(blog_intersect_tags.blog_id)
+FROM blog_tags
+-- Left join to account for the fact that not all tags may be associated with
+-- a post.
+LEFT JOIN blog_intersect_tags
+ON blog_tags.tag_id = blog_intersect_tags.tag_id
+GROUP BY blog_tags.tag_content;
