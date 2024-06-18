@@ -126,7 +126,9 @@ FROM authors JOIN blog_post
 ON authors.id = blog_post.author_id
 ORDER BY blog_post.date ASC;
 
-/* 
+/*
+
+TASK 2
 The company has decided that they would like to add tags to blog posts.
 
 Here are some requirements:
