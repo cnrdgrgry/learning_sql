@@ -32,18 +32,18 @@ CREATE DATABASE guardian_2;
 -- New author table
 CREATE TABLE authors (
   id bigserial PRIMARY KEY,
-  first_name varchar(25),
-  last_name varchar(50),
-  email varchar(50),
-  password varchar(255),
-  date_joined date,
+  first_name varchar(25) NOT NULL,
+  last_name varchar(50) NOT NULL, 
+  email varchar(50) NOT NULL UNIQUE,
+  password varchar(255) NOT NULL,
+  date_joined date NOT NULL DEFAULT CURRENT_DATE,
   bio text
 );
 
 -- New Blog table
 CREATE TABLE blog_post (
   blog_id bigserial PRIMARY KEY,
-  author_id bigint,
+  author_id int,
   title varchar(100),
   summary varchar(255),
   blog_content text,
@@ -125,3 +125,77 @@ SELECT authors.first_name, authors.last_name, blog_post.title, blog_post.date
 FROM authors JOIN blog_post
 ON authors.id = blog_post.author_id
 ORDER BY blog_post.date ASC;
+
+/* 
+The company has decided that they would like to add tags to blog posts.
+
+Here are some requirements:
+
+    Each blog post can have one or more tags
+    Each tag can be applied to one or more blog posts
+*/
+
+-- Create a tags table
+
+CREATE TABLE blog_tags (
+  tag_id serial PRIMARY KEY,
+  tag_content varchar(30) NOT NULL UNIQUE
+);
+
+-- Create a table that's needed to connect tags to blogposts (many to many!).
+
+CREATE TABLE blog_intersect_tags (
+  blog_id int NOT NULL,
+  tag_id int NOT NULL,
+  PRIMARY KEY (blog_id, tag_id),
+  FOREIGN KEY (blog_id) REFERENCES blog_post(blog_id),
+  FOREIGN KEY (tag_id) REFERENCES blog_tags(tag_id)
+);
+
+
+-- Insert (AI generated) Tags
+INSERT INTO blog_tags (tag_content) VALUES
+('Technology'),
+('Innovation'),
+('Interviews'),
+('Fantasy'),
+('World-Building'),
+('Bestsellers'),
+('Environment'),
+('Sustainability'),
+('Green Living'),
+('History'),
+('Storytelling'),
+('Awards'),
+('Characters'),
+('Screenwriting'),
+('Adaptation');
+
+-- Insert Blog Intersect Tags
+-- (AI Gen) Tags for Alex Johnson's posts
+INSERT INTO blog_intersect_tags (blog_id, tag_id) VALUES
+(1, 1), -- The Future of Tech | Technology
+(1, 2), -- The Future of Tech | Innovation
+(2, 3), -- Innovative Minds | Interviews
+
+-- (AI Gen) Tags for Samantha Doe's posts
+(3, 4), -- Fantasy Worlds | Fantasy
+(3, 5), -- Fantasy Worlds | World-Building
+(4, 4), -- Bestseller Secrets | Fantasy
+(4, 6), -- Bestseller Secrets | Bestsellers
+
+-- (AI Gen) Tags for Michael Smith's posts
+(5, 7), -- Green Journalism | Environment
+(5, 8), -- Green Journalism | Sustainability
+(6, 8), -- Sustainable Living | Sustainability
+(6, 9), -- Sustainable Living | Green Living
+
+-- (AI Gen) Tags for Jessica Brown's posts
+(7, 10), -- Historical Narratives | History
+(7, 11), -- Historical Narratives | Storytelling
+(8, 12), -- Award-Winning History | Awards
+
+-- (AI Gen) Tags for Daniel Lee's posts
+(9, 13), -- Character Creation | Characters
+(10, 14), -- Screenwriting Tips | Screenwriting
+(10, 15); -- Screenwriting Tips | Adaptation
