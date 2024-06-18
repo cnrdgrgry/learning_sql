@@ -227,3 +227,13 @@ FROM blog_tags
 JOIN blog_intersect_tags ON blog_tags.tag_id = blog_intersect_tags.tag_id
 JOIN blog_post ON blog_intersect_tags.blog_id = blog_post.blog_id
 WHERE blog_post.blog_id = 3;
+
+-- Retrieve a list of all blog post for a particular tab.
+--  fairly similar to above query, just 'turned around' a little!
+
+SELECT blog_post.title, blog_post.summary, blog_tags.tag_content
+FROM blog_post
+JOIN blog_intersect_tags ON blog_post.blog_id = blog_intersect_tags.blog_id
+JOIN blog_tags ON blog_intersect_tags.tag_id = blog_tags.tag_id
+WHERE blog_tags.tag_content ILIKE 'fantasy';
+
