@@ -1,5 +1,5 @@
 /*
-TechNative Database desugb challenge
+TechNative Database Design challenge
 
 Task 1
 
