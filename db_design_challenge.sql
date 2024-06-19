@@ -156,7 +156,8 @@ CREATE TABLE blog_intersect_tags (
 
 
 -- Insert (AI generated) Tags
-INSERT INTO blog_tags (tag_content) VALUES
+INSERT INTO blog_tags (tag_content)
+VALUES
 ('Technology'),
 ('Innovation'),
 ('Interviews'),
@@ -175,7 +176,8 @@ INSERT INTO blog_tags (tag_content) VALUES
 
 -- Insert Blog Intersect Tags
 -- (AI Gen) Tags for Alex Johnson's posts
-INSERT INTO blog_intersect_tags (blog_id, tag_id) VALUES
+INSERT INTO blog_intersect_tags (blog_id, tag_id)
+VALUES
 (1, 1), -- The Future of Tech | Technology
 (1, 2), -- The Future of Tech | Innovation
 (2, 3), -- Innovative Minds | Interviews
