@@ -41,7 +41,7 @@ CREATE TABLE authors (
 );
 
 -- New Blog table
-CREATE TABLE blog_postss (
+CREATE TABLE blog_posts (
   blog_id bigserial PRIMARY KEY,
   author_id int,
   title varchar(100),
