@@ -41,7 +41,7 @@ CREATE TABLE authors (
 );
 
 -- New Blog table
-CREATE TABLE blog_post (
+CREATE TABLE blog_postss (
   blog_id bigserial PRIMARY KEY,
   author_id int,
   title varchar(100),
@@ -62,41 +62,41 @@ INSERT INTO authors (first_name, last_name, email, password, date_joined, bio) V
 ('Daniel', 'Lee', 'daniel.lee@email.com', 'dlpassword123', '2022-06-21', 'Daniel is a novelist and screenwriter known for his compelling character-driven stories.');
 
 
-INSERT INTO blog_post (author_id, title, summary, blog_content, date) VALUES
+INSERT INTO blog_posts (author_id, title, summary, blog_content, date) VALUES
 (1, 'The Future of Tech', 'Exploring upcoming technological innovations.', 'In this article, Alex Johnson delves into the most anticipated technological advancements on the horizon...', '2022-06-17'),
 (1, 'Innovative Minds', 'Interviews with leading figures in technology.', 'Alex Johnson brings insights from interviews with pioneers in the tech industry...', '2022-06-17');
 
-INSERT INTO blog_post (author_id, title, summary, blog_content, date) VALUES
+INSERT INTO blog_posts (author_id, title, summary, blog_content, date) VALUES
 (2, 'Fantasy Worlds', 'Creating immersive fantasy universes.', 'Samantha Doe shares her process for crafting vivid and enchanting worlds in her fiction...', '2022-06-18'),
 (2, 'Bestseller Secrets', 'What makes a fantasy novel successful.', 'Join Samantha Doe as she breaks down the elements that make a fantasy story resonate with readers...', '2022-06-18');
 
-INSERT INTO blog_post (author_id, title, summary, blog_content, date) VALUES
+INSERT INTO blog_posts (author_id, title, summary, blog_content, date) VALUES
 (3, 'Green Journalism', 'The role of media in environmental advocacy.', 'Michael Smith discusses how journalism can influence environmental policy and public perception...', '2022-06-19'),
 (3, 'Sustainable Living', 'Practical tips for eco-friendly lifestyles.', 'In this piece, Michael Smith provides actionable advice for reducing your carbon footprint...', '2022-06-19');
 
-INSERT INTO blog_post (author_id, title, summary, blog_content, date) VALUES
+INSERT INTO blog_posts (author_id, title, summary, blog_content, date) VALUES
 (4, 'Historical Narratives', 'The power of storytelling in history.', 'Jessica Brown examines how historical narratives shape our understanding of the past...', '2022-06-20'),
 (4, 'Award-Winning History', 'A look at Jessica Brown''s acclaimed works.', 'This article reviews the historical literature that has earned Jessica Brown her awards...', '2022-06-20');
 
-INSERT INTO blog_post (author_id, title, summary, blog_content, date) VALUES
+INSERT INTO blog_posts (author_id, title, summary, blog_content, date) VALUES
 (5, 'Character Creation', 'Crafting compelling protagonists and antagonists.', 'Daniel Lee discusses his approach to creating memorable characters in his novels...', '2022-06-21'),
 (5, 'Screenwriting Tips', 'From novel to screenplay: adapting stories for the screen.', 'Join Daniel Lee as he shares insights on adapting written work for film and television...', '2022-06-21');
 
 -- List all blog post titles
 -- checking:
-TABLE blog_post;
+TABLE blog_posts;
 -- doing;
 SELECT title
-FROM blog_post;
+FROM blog_posts;
 
 -- List all blog titles with author's last_name
 -- checking;
 TABLE authors;
-TABLE blog_post;
+TABLE blog_posts;
 -- doing;
-SELECT authors.first_name, authors.last_name, blog_post.title
-FROM authors JOIN blog_post
-ON authors.id = blog_post.author_id;
+SELECT authors.first_name, authors.last_name, blog_posts.title
+FROM authors JOIN blog_posts
+ON authors.id = blog_posts.author_id;
 
 -- List all authors
 SELECT first_name, last_name
@@ -108,23 +108,23 @@ FROM authors
 ORDER BY last_name;
 
 -- List all authors and count how many blog post's they've created.
-SELECT authors.first_name, authors.last_name, COUNT(blog_post.author_id)
-FROM authors JOIN blog_post
-ON authors.id = blog_post.author_id
+SELECT authors.first_name, authors.last_name, COUNT(blog_posts.author_id)
+FROM authors JOIN blog_posts
+ON authors.id = blog_posts.author_id
 GROUP BY authors.first_name, authors.last_name
 ORDER BY authors.last_name;
 
 -- List all blog posts for a specific author
-SELECT authors.first_name, authors.last_name, blog_post.title
-FROM authors JOIN blog_post
-ON authors.id = blog_post.author_id
+SELECT authors.first_name, authors.last_name, blog_posts.title
+FROM authors JOIN blog_posts
+ON authors.id = blog_posts.author_id
 WHERE authors.last_name = 'Doe';
 
 -- List all blog posts, sorted by the oldest first
-SELECT authors.first_name, authors.last_name, blog_post.title, blog_post.date
-FROM authors JOIN blog_post
-ON authors.id = blog_post.author_id
-ORDER BY blog_post.date ASC;
+SELECT authors.first_name, authors.last_name, blog_posts.title, blog_posts.date
+FROM authors JOIN blog_posts
+ON authors.id = blog_posts.author_id
+ORDER BY blog_posts.date ASC;
 
 /*
 
@@ -150,7 +150,7 @@ CREATE TABLE blog_intersect_tags (
   blog_id int NOT NULL,
   tag_id int NOT NULL,
   PRIMARY KEY (blog_id, tag_id),
-  FOREIGN KEY (blog_id) REFERENCES blog_post(blog_id),
+  FOREIGN KEY (blog_id) REFERENCES blog_posts(blog_id),
   FOREIGN KEY (tag_id) REFERENCES blog_tags(tag_id)
 );
 
@@ -224,18 +224,18 @@ GROUP BY blog_tags.tag_content;
 --    seems to require double JOIN which I had to research and play with to
 --    get right.
 
-SELECT blog_post.title, blog_post.summary, blog_tags.tag_content
+SELECT blog_posts.title, blog_posts.summary, blog_tags.tag_content
 FROM blog_tags
 JOIN blog_intersect_tags ON blog_tags.tag_id = blog_intersect_tags.tag_id
-JOIN blog_post ON blog_intersect_tags.blog_id = blog_post.blog_id
-WHERE blog_post.blog_id = 3;
+JOIN blog_posts ON blog_intersect_tags.blog_id = blog_posts.blog_id
+WHERE blog_posts.blog_id = 3;
 
 -- Retrieve a list of all blog post for a particular tab.
 --  fairly similar to above query, just 'turned around' a little!
 
-SELECT blog_post.title, blog_post.summary, blog_tags.tag_content
-FROM blog_post
-JOIN blog_intersect_tags ON blog_post.blog_id = blog_intersect_tags.blog_id
+SELECT blog_posts.title, blog_posts.summary, blog_tags.tag_content
+FROM blog_posts
+JOIN blog_intersect_tags ON blog_posts.blog_id = blog_intersect_tags.blog_id
 JOIN blog_tags ON blog_intersect_tags.tag_id = blog_tags.tag_id
 WHERE blog_tags.tag_content ILIKE 'fantasy';
 
